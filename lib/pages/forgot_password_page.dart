@@ -3,6 +3,7 @@ import 'package:tokoto/components/custom_button.dart';
 import 'package:tokoto/components/custom_textfield.dart';
 import 'package:tokoto/pages/register_page.dart';
 import 'package:tokoto/services/auth_service.dart';
+import 'package:tokoto/responsive/responsive_extension.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -13,85 +14,93 @@ class ForgotPasswordPage extends StatefulWidget {
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   String email = "";
-  TextEditingController emailController =TextEditingController();
-  
+  TextEditingController emailController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: const Padding(
-                padding: EdgeInsets.only(left: 95),
-                child: Text("Forgot Password", style: TextStyle(fontSize: 16))
-                )
-              ),
+            title: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 17.sw()),
+                child: Text("Forgot Password",
+                    style: TextStyle(fontSize: 2.sh())))),
         body: ListView(children: [
-          SizedBox(height:50),
-          Column(
-            children: [
-              
-              const Center(
-                  child: Text("Forgot Password",
-                      style: TextStyle(
-                          fontSize: 26, fontWeight: FontWeight.w500))),
-              const Text(
-                  "Please enter your email and we will send\n      you a link to return to your account"),
-              CustomTextField(
-                text: "Enter your email", 
-                label_text: "Email",
-                my_controller: emailController,
-                onChanged: (value){
-                  setState(() {
-                    email = value;
-                  });
-                },
-                obscureText: false,
-                ),
-
-              SizedBox(
-                height: 10,
-              ),
-              CustomButtton(onTap: () async {
-                final message = await AuthService().resetPassword(email);
-                if (message == 'Success') {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("Password reset link has been successfully sent!\nIf you are a verified user"),
-                    ));
-                    return;
-                   }
-                  //  show error whatever it might be
-                    ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(message!),
-                    ));
-              }, text: "Continue"),
-              SizedBox(
-                height: 50,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Don't have an account?"),
-                  GestureDetector(
-                    onTap:() {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) {
-                      return RegisterPage();
-                    })
-                        );
+          Padding(
+            padding: EdgeInsets.only(top:3.sh()),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("Forgot Password",
+                    style:
+                        TextStyle(fontSize: 3.sh(), fontWeight: FontWeight.w500)),
+                const Text(
+                    "Please enter your email and we will send\n      you a link to return to your account"),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 1.sh()),
+                  child: CustomTextField(
+                    icon:Icon(Icons.email_outlined),
+                    text: "Enter your email",
+                    label_text: "Email",
+                    my_controller: emailController,
+                    onChanged: (value) {
+                      setState(() {
+                        email = value;
+                      });
                     },
-                    child:const Text(" Sign Up", 
-                    style:TextStyle(
-                      color:Colors.orange,
-                       fontWeight:FontWeight.w500
-                    ))),
-                ],
-              ),
+                    obscureText: false,
+                  ),
+                ),
+                CustomButtton(
+                    onTap: () async {
+                      // Start showing the circular progress indicator
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
+                      );
+                      
+                      final message = await AuthService().resetPassword(email);
+            
+                      // Hide the progress indicator
+                      Navigator.pop(context);
+                      if (message == 'Success') {
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text(
+                              "Password reset link has been successfully sent!\nIf you are a verified user"),
+                        ));
+                        return;
+                      }
+                      //  show error whatever it might be
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(message),
+                      ));
+                    },
+                    text: "Continue"),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 2.sh()),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text("Don't have an account?"),
+                      GestureDetector(
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const RegisterPage();
+                            }));
+                          },
+                          child: Text(" Sign Up",
+                              style: TextStyle(
+                                  color: Theme.of(context).primaryColor,))),
+                    ],
+                  ),
+                ),
               ],
+            ),
           ),
-        ])
-      );
-  
+        ]));
   }
 }

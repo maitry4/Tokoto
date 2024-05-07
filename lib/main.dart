@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tokoto/firebase_options.dart';
 import 'package:tokoto/pages/onboarding_screen.dart';
+import 'package:tokoto/responsive/size_config.dart';
 import 'package:tokoto/themes/light_theme.dart';
 
 void main() async {
@@ -18,10 +19,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    
+    SizeConfig().init(context);
     return MaterialApp(
       theme: lightTheme,
       debugShowCheckedModeBanner: false,
-      home: OnBoardingScreen(),
+      home: const OnBoardingScreen(),
     ); }
 }

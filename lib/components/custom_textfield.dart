@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:tokoto/responsive/responsive_extension.dart';
+
 class CustomTextField extends StatelessWidget {
   final String text;
   final String label_text;
   void Function(String)? onChanged;
   final TextEditingController my_controller;
   final bool obscureText;
+  final Widget? icon;
   
   CustomTextField({
     super.key,
@@ -13,23 +16,25 @@ class CustomTextField extends StatelessWidget {
     required this.my_controller,
     required this.onChanged,
     required this.obscureText,
+    required this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-              padding: const EdgeInsets.only(top:10.0, bottom: 10.0, right: 18.0, left: 18.0),
+              padding: EdgeInsets.only(top:1.sh(), bottom: 1.sh(), right: 4.sw(), left: 4.sw()),
               child: TextField(
                 onChanged: onChanged,
                 obscureText: obscureText,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(30),
+                    borderRadius: BorderRadius.circular(3.sh()),
                   ),
                   hintText: text,
                   labelText: label_text,
+                  suffixIcon: icon),
                 ),
-              ),
+              
             );
   }
 }

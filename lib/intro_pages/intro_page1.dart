@@ -1,24 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
+import 'package:tokoto/responsive/size_config.dart';
+import 'package:tokoto/responsive/responsive_extension.dart';
 
 class IntroPage1 extends StatelessWidget {
   const IntroPage1({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
-      alignment: Alignment(0,-1),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          
-                Text("Welcome to Tokoto, Let's shop!", style:TextStyle(fontSize: 15, fontWeight:FontWeight.w400)),
-        
-          SizedBox(height: 65,),
-          SizedBox(width:400, height:250,child: Lottie.network(
-                  'https://lottie.host/286c2228-c3b5-477d-82d0-41c9cd7b7892/JjW7Y5qdPt.json'),),
-        ],
+    return SizedBox(
+      width: SizeConfig.safeBlockHorizontal,
+      height: SizeConfig.safeBlockVertical,
+      child: Center(
+        child: SingleChildScrollView(
+                child: Column(
+                children: [
+                  Padding(
+              padding:  EdgeInsets.symmetric(horizontal:30.sw()),
+              child: Text("TOKOTO", style: TextStyle(color:Theme.of(context).primaryColor, fontSize:9.sw(), fontWeight:FontWeight.bold),),
+            ),
+                  
+                        Text("Welcome to Tokoto, Let's shop!", style:TextStyle(fontSize: 2.sh(), fontWeight:FontWeight.w400)),
+                        
+                  
+                  SizedBox(width:75.sw(), height:65.sh(),child: Image.asset('assets/intro1.gif'),),
+                ],
+              ),
+        ),
       ),
     );
   }

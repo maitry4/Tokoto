@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tokoto/services/database_services.dart';
 
 class AuthService {
   Future<String?> registration({
@@ -8,10 +8,24 @@ class AuthService {
     required String password,
   }) async {
     try {
-      await FirebaseAuth.instance
+      UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
-      User user = await FirebaseAuth.instance.currentUser!;
+      User user = FirebaseAuth.instance.currentUser!;
+
       await user.sendEmailVerification();
+
+      Map<String,dynamic> values = {
+        'username': email.split('@')[0],
+        'Full-Name': '',
+        'Gender':'',
+        'Primary-Address':'',
+        'Phone-Number':'',
+        'Order-History': {},
+        'Wishlist': {},
+        'Shopping-Cart':{},
+        'Role':'customer',
+      };
+      await DataBaseService().createCollection(collection:'Users', documentID:userCredential.user!.email!, setOfValues: values);
       return 'Success';
     }
     // authentication errors
@@ -65,7 +79,7 @@ class AuthService {
       await FirebaseAuth.instance.signOut();
     } catch (e) {
       print("Error logging out: $e");
-      throw e; // You can handle the error as per your requirement
+      rethrow; // You can handle the error as per your requirement
     }
   }
 

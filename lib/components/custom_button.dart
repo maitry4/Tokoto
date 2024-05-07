@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:tokoto/responsive/responsive_extension.dart';
 
 class CustomButtton extends StatelessWidget {
   final void Function()? onTap;
@@ -12,17 +13,19 @@ class CustomButtton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 350,
-      height: 60,
+      width: 90.sw(),
+      height: 7.sh(),
+      // width: 350,
+      // height: 60,
       child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   foregroundColor: Colors.white, // foreground (text) color
                   backgroundColor: Theme.of(context).primaryColor, // background color
                 ),
+                  onPressed: onTap,
                   child: Text(
                     text,
                   ),
-                  onPressed: onTap,
                 ),
     );
   }

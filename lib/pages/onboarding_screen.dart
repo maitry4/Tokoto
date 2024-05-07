@@ -5,6 +5,8 @@ import 'package:tokoto/intro_pages/intro_page1.dart';
 import 'package:tokoto/intro_pages/intro_page2.dart';
 import 'package:tokoto/intro_pages/intro_page3.dart';
 import 'package:tokoto/pages/login_page.dart';
+import 'package:tokoto/responsive/responsive_extension.dart';
+import 'package:tokoto/responsive/size_config.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
@@ -15,56 +17,59 @@ class OnBoardingScreen extends StatefulWidget {
 
 class _OnBoardingScreenState extends State<OnBoardingScreen> {
   // controller to keep track of which is current page 
-  PageController _controller = PageController();
+  final PageController _controller = PageController();
 
   void goToLogin() {
     Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
-                      return LoginPage();
+                      return const LoginPage();
                     })
                   );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            alignment: Alignment(0,-0.55),
-            child: Text("TOKOTO", style: TextStyle(color:Theme.of(context).primaryColor, fontSize:35, fontWeight:FontWeight.bold),)
-          ),
-
-          // to switch pages
-          PageView(
-          controller: _controller,
+    return SizedBox(
+      width: SizeConfig.safeBlockHorizontal,
+      height: SizeConfig.safeBlockVertical,
+      child: Scaffold(
+        body: Stack(
           children: [
-            // pages
-            IntroPage1(),
-            IntroPage2(),
-            IntroPage3(),
-          ],
-        ),
-
-        // dot indicator
-        Container(
-          alignment: Alignment(0,0.55),
-          child:
-              SmoothPageIndicator(
-                controller: _controller,
-                 count:3,
-                 effect: WormEffect(activeDotColor: Colors.orange),   
-),
-                 
+            
+      
+            // to switch pages
+            PageView(
+            controller: _controller,
+            children: const [
+              // pages
+              IntroPage1(),
+              IntroPage2(),
+              IntroPage3(),
+            ],
           ),
-
-          // button
-          Container(
-            alignment: Alignment(0,0.85),
-            child: CustomButtton(text: 'Continue',onTap:goToLogin)),
- 
-        ]
+      
+          // dot indicator
+          
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical:80.sh(), horizontal: 44.sw()),
+                  child: SmoothPageIndicator(
+                    controller: _controller,
+                     count:3,
+                     effect: WormEffect(activeDotColor: Theme.of(context).primaryColor),   
+                        ),
+                ),
+                   
+            
+      
+            // button
+              Padding(
+                padding: EdgeInsets.only(top:84.sh(), left:5.sw()),
+                child: CustomButtton(text: 'Continue',onTap:goToLogin),
+              ),
+       
+          ]
+        ),
       ),
     );
   }
