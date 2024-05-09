@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:tokoto/components/popular_product_subtile.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
-class FavoritePage extends StatefulWidget {
-  const FavoritePage({super.key});
+class PopularProductPage extends StatefulWidget {
+  const PopularProductPage({super.key});
 
   @override
-  State<FavoritePage> createState() => _FavoritePageState();
+  State<PopularProductPage> createState() => _PopularProductPageState();
 }
 
-class _FavoritePageState extends State<FavoritePage> {
+class _PopularProductPageState extends State<PopularProductPage> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      appBar:AppBar(title: Padding(
-        padding:  EdgeInsets.symmetric(horizontal:30.sw()),
-        child: Text("Favorites"),
-      ), automaticallyImplyLeading:false,),
+      appBar: AppBar(title: Padding(
+        padding:  EdgeInsets.symmetric(horizontal:23.sw()),
+        child: Text("Products", style: TextStyle(fontSize:4.sw()),),
+      ),),
       body: GridView.count(
         childAspectRatio: 0.81,
         padding: EdgeInsets.symmetric(horizontal:3.sw(), vertical:2.sh()),

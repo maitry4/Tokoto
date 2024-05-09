@@ -3,7 +3,10 @@ import 'package:tokoto/components/custom_icon.dart';
 import 'package:tokoto/components/custom_search_bar.dart';
 import 'package:tokoto/components/explore_tile_2.dart';
 import 'package:tokoto/components/explore_tile_purple.dart';
+import 'package:tokoto/components/popular_product_tile.dart';
 import 'package:tokoto/components/special_for_you_tile.dart';
+import 'package:tokoto/logged_in_user_pages/cart_page.dart';
+import 'package:tokoto/logged_in_user_pages/popular_product_page.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
 class ExplorePage extends StatefulWidget {
@@ -17,6 +20,7 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(automaticallyImplyLeading:false,toolbarHeight: 2.sh(), ),
       body: ListView(
         children: [
           Column(
@@ -28,7 +32,15 @@ class _ExplorePageState extends State<ExplorePage> {
                   ),
 
                   // CART
-                  const CustomIcon(icon: Icon(Icons.shopping_cart_outlined), padding: 4,),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const CartPage();
+                            }));
+                    },
+                    child: const CustomIcon(icon: Icon(Icons.shopping_cart_outlined), padding: 4,)
+                    ),
 
                   SizedBox(
                     width: 2.sw(),
@@ -73,10 +85,22 @@ class _ExplorePageState extends State<ExplorePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text("Popular Products", style: TextStyle(fontSize: 2.sh(), fontWeight: FontWeight.bold),),
-                    Text("See More", style: TextStyle(color:Colors.grey),)
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return const PopularProductPage();
+                            }));
+                      },
+                      child: Text("See More", style: TextStyle(color:Colors.grey),)
+                      )
                   ],
                 ),
               ),
+              Padding(
+                padding: EdgeInsets.only(left:3.sw()),
+                child: PopularProductsTile(),
+              )
             ],
           )
         ],

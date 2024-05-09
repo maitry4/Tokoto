@@ -24,6 +24,9 @@ class AuthService {
         'Wishlist': {},
         'Shopping-Cart':{},
         'Role':'customer',
+        'Profile-Picture':"",
+        'Language-Preference':"",
+        'hadIntro':false
       };
       await DataBaseService().createCollection(collection:'Users', documentID:userCredential.user!.email!, setOfValues: values);
       return 'Success';

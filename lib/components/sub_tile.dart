@@ -17,7 +17,6 @@ class SubTile extends StatelessWidget {
             child: Column(
               children: [
                  Container(
-                  // padding: EdgeInsets.all(2.sw()),
                   decoration: BoxDecoration(
                     color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(1.sh()),
