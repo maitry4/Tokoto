@@ -29,6 +29,7 @@ class AuthService {
         'hadIntro':false
       };
       await DataBaseService().createCollection(collection:'Users', documentID:userCredential.user!.email!, setOfValues: values);
+      await DataBaseService().updateDocument(collection: "Users", documentID: email, setOfValues: {"hadIntro":true});
       return 'Success';
     }
     // authentication errors
@@ -62,6 +63,7 @@ class AuthService {
 
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
+      await DataBaseService().updateDocument(collection: "Users", documentID: email, setOfValues: {"hadIntro":true});
       return 'Success';
 
     } on FirebaseAuthException catch (e) {

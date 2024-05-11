@@ -125,7 +125,7 @@ class _LoginPageState extends State<LoginPage> {
                       // Hide the progress indicator
                       Navigator.pop(context);
             
-                      // redirect to home page on successful registration
+                      // redirect to login success page on successful registration
                       if (message == 'Success') {
                         Navigator.pushReplacement(context,
                             MaterialPageRoute(builder: (context) {

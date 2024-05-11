@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tokoto/components/special_for_you_subtile.dart';
+import 'package:tokoto/components/sub_components/special_for_you_subtile.dart';
 
 class Special4UTile extends StatelessWidget {
   const Special4UTile({super.key});

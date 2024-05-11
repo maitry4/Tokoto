@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tokoto/components/custom_icon.dart';
+import 'package:tokoto/pages/logged_in_user_pages/account_page.dart';
 import 'package:tokoto/pages/login_page.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 import 'package:tokoto/services/auth_service.dart';
@@ -238,7 +239,15 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
             SizedBox(height: 2.sh()),
-            itemProfile('My Account', Icons.person_outline),
+            GestureDetector(
+              child: itemProfile('My Account', Icons.person_outline),
+              onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const AccountPage();
+                    }));
+              },
+            ),
             SizedBox(height: 2.sh()),
             itemProfile('Notifications', Icons.notifications_outlined),
             SizedBox(height: 2.sh()),

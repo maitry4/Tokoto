@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tokoto/components/custom_button.dart';
-import 'package:tokoto/intro_pages/intro_page1.dart';
-import 'package:tokoto/intro_pages/intro_page2.dart';
-import 'package:tokoto/intro_pages/intro_page3.dart';
-import 'package:tokoto/pages/login_page.dart';
+import 'package:tokoto/pages/intro_page.dart';
+import 'package:tokoto/pages/auth_page.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 import 'package:tokoto/responsive/size_config.dart';
 
@@ -23,7 +21,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
-                      return const LoginPage();
+                      return const AuthPage();
                     })
                   );
   }
@@ -43,9 +41,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
             controller: _controller,
             children: const [
               // pages
-              IntroPage1(),
-              IntroPage2(),
-              IntroPage3(),
+              IntroPage(text:"Welcome to Tokoto, Let's shop!", imagePath:'assets/intro1.gif'),
+              IntroPage(text:"We help people connect with store\n around United States of America", imagePath:'assets/intro2.gif'),
+              IntroPage(text:"We show the Easy way to shop.\n      Just stay at home with us.", imagePath:'assets/intro3.gif'),
             ],
           ),
       

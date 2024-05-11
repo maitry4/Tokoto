@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tokoto/components/popular_product_subtile.dart';
+import 'package:tokoto/components/sub_components/popular_product_subtile.dart';
 
 class PopularProductsTile extends StatelessWidget {
   const PopularProductsTile({super.key});

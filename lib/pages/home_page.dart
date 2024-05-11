@@ -1,8 +1,8 @@
 import "package:flutter/material.dart";
-import "package:tokoto/logged_in_user_pages/chat_page.dart";
-import "package:tokoto/logged_in_user_pages/explore_page.dart";
-import "package:tokoto/logged_in_user_pages/favorites_page.dart";
-import "package:tokoto/logged_in_user_pages/profile_page.dart";
+import 'package:tokoto/pages/logged_in_user_pages/chat_page.dart';
+import 'package:tokoto/pages/logged_in_user_pages/explore_page.dart';
+import 'package:tokoto/pages/logged_in_user_pages/favorites_page.dart';
+import 'package:tokoto/pages/logged_in_user_pages/profile_page.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
 class HomePage extends StatefulWidget {
@@ -48,10 +48,6 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.person_outlined),
               label: "Profile",
             ),
-            // BottomNavigationBarItem(
-            //   icon: Icon(Icons.settings),
-            //   label: 'Settings',
-            // ),
           ],
         ),
         body: Padding(

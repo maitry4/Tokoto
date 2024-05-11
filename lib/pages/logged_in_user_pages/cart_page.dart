@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tokoto/components/cart_tile.dart';
+import 'package:tokoto/components/pages/cart_tile.dart';
 import 'package:tokoto/components/custom_button.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
