@@ -1,7 +1,5 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
 
 class DataBaseService {
   Future<String> createCollection({
@@ -36,7 +34,7 @@ class DataBaseService {
     }
   }
 
-  Future<List<Map<String, dynamic>>> fetchDocuments({
+  Future<List<Map<String, dynamic>>> fetchDocumentsWithBanner({
     required String collection,
   }) async {
     List<Map<String, dynamic>> docs = [];
@@ -65,6 +63,27 @@ class DataBaseService {
 
     return docs;
   }
+  Future<List<String>> fetchDocuments({
+    required String collection,
+  }) async {
+    List<String> docs = [];
+
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection(collection).get();
+
+      querySnapshot.docs.forEach((doc) {
+        String name = doc.id;
+
+        docs.add(name);
+      });
+    } catch (error) {
+      print("Error fetching categories: $error");
+      return [];
+    }
+
+    return docs;
+  }
 
   Future<Map<String, dynamic>> fetchData({
     required String collection,
@@ -78,12 +97,22 @@ class DataBaseService {
           .get();
       Map<String, dynamic> data = (snap.data()! as dynamic);
 
-      // print(data);
       return data;
       }catch(e) {
         Map<String, dynamic> d = {};
         return d;
       }
+   
+  }
+  Future<DocumentSnapshot<Object?>> getUserData({
+    required String collection,
+    required String documentID,
+  }) async {
+        DocumentSnapshot snap = await FirebaseFirestore.instance
+          .collection(collection)
+          .doc(documentID)
+          .get();
+      return snap;
    
   }
 }

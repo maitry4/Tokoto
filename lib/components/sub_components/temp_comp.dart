@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
-class PopularProductSubtile extends StatelessWidget {
+class TempComp extends StatelessWidget {
   final String name;
   final String price;
   final String image_path;
-  const PopularProductSubtile({
+  const TempComp({
     super.key,
     required this.name,
     required this.price,
@@ -16,7 +16,7 @@ class PopularProductSubtile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 2.sw()),
-      child: Column(
+      child: ListView(
         children: [
           Container(
             padding: EdgeInsets.only(
@@ -30,6 +30,7 @@ class PopularProductSubtile extends StatelessWidget {
             ),
           ),
           Container(
+            alignment: Alignment.center,
             width: 34.sw(), // or any width you desire
             child: Text(
               name,
@@ -38,14 +39,17 @@ class PopularProductSubtile extends StatelessWidget {
           ),
          Row(
               children: [
-                Text(price),
+                Padding(
+                  padding: EdgeInsets.only(left:5.sw()),
+                  child: Text(price),
+                ),
                 SizedBox(
-                  width: 16.sw(),
+                  width: 20.sw(),
                 ),
                 Icon(Icons.favorite),
               ],
             ),
-        
+          
         ],
       ),
     );

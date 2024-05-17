@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tokoto/services/database_services.dart';
 
 class AuthService {
+
   Future<String?> registration({
     required String email,
     required String password,
@@ -26,10 +27,8 @@ class AuthService {
         'Role':'customer',
         'Profile-Picture':"",
         'Language-Preference':"",
-        'hadIntro':false
       };
       await DataBaseService().createCollection(collection:'Users', documentID:userCredential.user!.email!, setOfValues: values);
-      await DataBaseService().updateDocument(collection: "Users", documentID: email, setOfValues: {"hadIntro":true});
       return 'Success';
     }
     // authentication errors
@@ -60,10 +59,8 @@ class AuthService {
     required String password,
   }) async {
     try {
-
       await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      await DataBaseService().updateDocument(collection: "Users", documentID: email, setOfValues: {"hadIntro":true});
       return 'Success';
 
     } on FirebaseAuthException catch (e) {

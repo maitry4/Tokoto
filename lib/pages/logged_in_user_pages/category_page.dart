@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tokoto/providers/category_provider.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
-import 'package:tokoto/services/database_services.dart';
+import 'package:tokoto/components/sub_components/temp_comp.dart';
 
 class CategoryPage extends StatefulWidget {
   final String category;
@@ -11,47 +13,12 @@ class CategoryPage extends StatefulWidget {
 }
 
 class _CategoryPageState extends State<CategoryPage> {
-  List keys = [];
-  List images = [];
-  void getProducts() {
-    Future<Map<String, dynamic>> data = DataBaseService()
-        .fetchData(collection: "Categories", documentID: widget.category);
-
-    data.then((map) {
-      setState(() {
-        keys = map.keys.toList();
-        keys.remove("Banner_Image");
-      });
-      print(keys); // This will print the list of keys
-
-      // Create a list of futures to populate the images list
-      List<Future> futures = [];
-      keys.forEach((key) {
-        futures.add(data.then((map) {
-          setState(() {
-            images.add(map[key]["Product_Image"]);
-          });
-        }));
-      });
-
-      // Wait for all futures to complete before printing images
-      Future.wait(futures).then((_) {
-        print(images);
-      });
-    }).catchError((error) {
-      print("Error fetching map: $error");
-    });
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getProducts();
-  }
 
   @override
   Widget build(BuildContext context) {
+    // Retrieve the CategoryProvider instance
+    CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
+    categoryProvider.getProducts(widget.category);
     return Scaffold(
         appBar: AppBar(
           title: Padding(
@@ -59,32 +26,36 @@ class _CategoryPageState extends State<CategoryPage> {
             child: Text(widget.category),
           ),
         ),
-        body: GridView.builder(
-          padding: EdgeInsets.symmetric(vertical: 4.sh(), horizontal: 2.sw()),
-          gridDelegate:
-              SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2, childAspectRatio: 0.91,),
-          itemCount: keys.length, // Use keys.length here
-          itemBuilder: (context, index) {
-            if (keys.isEmpty) {
-              // Display a loading indicator or an empty container
-              return CircularProgressIndicator(); // Example of a loading indicator
-            } else {
-              // Access keys only if it's not empty
+        body: Consumer<CategoryProvider>(
+        builder: (context, categoryProvider, _) {
+          if (categoryProvider.keys.isEmpty) {
+            return CircularProgressIndicator(); // Show loading indicator while fetching data
+          }
+
+          return GridView.builder(
+            padding: EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.87,
+            ),
+            itemCount: categoryProvider.keys.length,
+            itemBuilder: (context, index) {
+              final currentKey = categoryProvider.keys[index];
+              final currentImage = categoryProvider.images[index];
+              final currentPrice = categoryProvider.prices[index];
+
               return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(2.sh()),
-                    image: DecorationImage(
-                      image: NetworkImage(images[index]),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  child: Center(child: Text(keys[index])),
+                child: TempComp(
+                  name: currentKey,
+                  price: currentPrice,
+                  image_path: currentImage,
                 ),
               );
-            }
-          },
-        ));
+            },
+          );
+        },
+      ),
+);
   }
 }

@@ -3,7 +3,6 @@ import 'package:tokoto/pages/logged_in_user_pages/chat_page.dart';
 import 'package:tokoto/pages/logged_in_user_pages/explore_page.dart';
 import 'package:tokoto/pages/logged_in_user_pages/favorites_page.dart';
 import 'package:tokoto/pages/logged_in_user_pages/profile_page.dart';
-import 'package:tokoto/responsive/responsive_extension.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});

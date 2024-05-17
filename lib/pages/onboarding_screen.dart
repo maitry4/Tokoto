@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:tokoto/components/custom_button.dart';
 import 'package:tokoto/pages/intro_page.dart';
@@ -17,11 +18,15 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   // controller to keep track of which is current page 
   final PageController _controller = PageController();
 
-  void goToLogin() {
+  void goToLogin() async {
+    final pres = await SharedPreferences.getInstance();
+    pres.setBool("onboarding", true);
+
+    if(!mounted)return;
     Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) {
-                      return const AuthPage();
+                      return  AuthPage();
                     })
                   );
   }

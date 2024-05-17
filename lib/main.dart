@@ -1,7 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tokoto/firebase_options.dart';
+import 'package:tokoto/pages/auth_page.dart';
 import 'package:tokoto/pages/onboarding_screen.dart';
+import 'package:tokoto/providers/category_provider.dart';
+import 'package:tokoto/providers/user_provider.dart';
 import 'package:tokoto/responsive/size_config.dart';
 import 'package:tokoto/themes/light_theme.dart';
 
@@ -10,19 +15,34 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const MyApp());
+
+  final pres = await SharedPreferences.getInstance();
+  final onboarding = pres.getBool('onboarding') ?? false;
+
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserProvider()),
+        ChangeNotifierProvider(create: (context) => CategoryProvider()),
+        // Add more providers if needed
+      ],
+      child: MyApp(onboarding: onboarding),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool onboarding;
 
-  // This widget is the root of your application.
+  const MyApp({Key? key, this.onboarding = false}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return MaterialApp(
       theme: lightTheme,
       debugShowCheckedModeBanner: false,
-      home: const OnBoardingScreen(),
-    ); }
+      home: onboarding ? AuthPage() : OnBoardingScreen(),
+    );
+  }
 }
