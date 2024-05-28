@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
+import 'package:tokoto/controllers/user_controller.dart';
 import 'package:tokoto/models/category_model.dart';
 import 'package:tokoto/pages/logged_in_user_pages/product_detail_page.dart';
-import 'package:tokoto/providers/user_provider.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
 class PopularProductSubtile extends StatelessWidget {
   final String name;
   final String price;
   final String image_path;
-  const PopularProductSubtile({
+  final UserController userController = Get.put(UserController());
+   PopularProductSubtile({
     super.key,
     required this.name,
     required this.price,
@@ -18,9 +19,9 @@ class PopularProductSubtile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserProvider>(
-      builder:(context, value, child) {
-        bool isInWishlist = value.wishList!.any((item) =>
+    return Obx(
+      () {
+        bool isInWishlist = userController.wishList!.any((item) =>
             item["name"] == name &&
             item["price"] == price &&
             item["image_path"] == image_path);
@@ -71,13 +72,13 @@ class PopularProductSubtile extends StatelessWidget {
                     onTap: () async {
                       String message;
                       if (isInWishlist) {
-                        message = await value.removeFromWishList(MyProduct(name: name, price: price, image_path: image_path));
+                        message = await userController.removeFromWishList(MyProduct(name: name, price: price, image_path: image_path));
                       } else {
-                        message = await value.addToWishList(MyProduct(name: name, price: price, image_path: image_path));
+                        message = await userController.addToWishList(MyProduct(name: name, price: price, image_path: image_path));
                       }
                       print(message);
                       print("wishlist Here");
-                      print(value.wishList);
+                      print(userController.wishList);
                       if (message == "Success") {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(

@@ -42,7 +42,7 @@ class _ExplorePageState extends State<ExplorePage> with TickerProviderStateMixin
                   GestureDetector(
                     onTap: () {
                       Navigator.push(context, MaterialPageRoute(builder: (context) {
-                        return const CartPage();
+                        return CartPage();
                       }));
                     },
                     child: const CustomIcon(

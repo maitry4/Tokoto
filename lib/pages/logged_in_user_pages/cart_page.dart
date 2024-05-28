@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tokoto/components/pages/cart_tile.dart';
 import 'package:tokoto/components/custom_button.dart';
-import 'package:tokoto/providers/user_provider.dart';
+import 'package:tokoto/controllers/user_controller.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
-class CartPage extends StatefulWidget {
-  const CartPage({super.key});
+class CartPage extends StatelessWidget {
+  final UserController userController = Get.put(UserController());
+   CartPage({super.key});
 
-  @override
-  State<CartPage> createState() => _CartPageState();
-}
-
-class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<UserProvider>(
-      builder:(context, value, child) {
-        List cartList = value.cartList ?? [];
+    return Obx(
+      () {
+        List cartList = userController.cartList ?? [];
         double totalPrice = 0;
         cartList.forEach((item) {
           totalPrice += double.parse(item["price"].replaceAll("\$", "")) * item["quantity"];

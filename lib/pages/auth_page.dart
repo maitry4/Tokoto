@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tokoto/pages/home_page.dart';
 import 'package:tokoto/pages/login_page.dart';
-import 'package:tokoto/providers/user_provider.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});

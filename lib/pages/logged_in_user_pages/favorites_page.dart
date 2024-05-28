@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tokoto/components/sub_components/temp_comp.dart';
-import 'package:tokoto/providers/user_provider.dart';
+import 'package:tokoto/controllers/user_controller.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
-class FavoritePage extends StatefulWidget {
-  const FavoritePage({super.key});
+class FavoritePage extends StatelessWidget {
+  final UserController userController = Get.put(UserController());
+  FavoritePage({super.key});
 
-  @override
-  State<FavoritePage> createState() => _FavoritePageState();
-}
-
-class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,9 +19,9 @@ class _FavoritePageState extends State<FavoritePage> {
         ),
         automaticallyImplyLeading: false,
       ),
-      body: Consumer<UserProvider>(
-        builder: (context, userProvider, child) {
-          var wishList = userProvider.wishList;
+      body: Obx(
+        () {
+          var wishList = userController.wishList;
           
           if (wishList == null || wishList.isEmpty) {
             return Center(
