@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tokoto/components/sub_components/sub_tile.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
-import 'package:tokoto/responsive/size_config.dart';
 
 class ExploreTile2 extends StatelessWidget {
   const ExploreTile2({super.key});

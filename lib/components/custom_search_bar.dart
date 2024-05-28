@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
 class CustomSearchBar extends StatefulWidget {
-  const CustomSearchBar({super.key});
+  CustomSearchBar({super.key});
 
   @override
   State<CustomSearchBar> createState() => _CustomSearchBarState();

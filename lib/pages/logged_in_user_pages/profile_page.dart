@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:tokoto/components/custom_icon.dart';
 import 'package:tokoto/pages/logged_in_user_pages/account_page.dart';
 import 'package:tokoto/pages/login_page.dart';
+import 'package:tokoto/providers/user_provider.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 import 'package:tokoto/services/auth_service.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -262,6 +264,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: itemProfile('Log Out', Icons.logout),
                 onTap: () async {
                   try {
+                    Provider.of<UserProvider>(context, listen: false).clearUserData();
                     await AuthService().logout();
                     // Redirect to login page or any other page after logout
                     Navigator.pushReplacement(context,

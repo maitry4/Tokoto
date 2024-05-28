@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tokoto/components/sub_components/popular_product_subtile.dart';
+import 'package:provider/provider.dart';
+import 'package:tokoto/components/sub_components/temp_comp.dart';
+import 'package:tokoto/providers/user_provider.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
 class FavoritePage extends StatefulWidget {
@@ -12,27 +14,43 @@ class FavoritePage extends StatefulWidget {
 class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      appBar:AppBar(title: Padding(
-        padding:  EdgeInsets.symmetric(horizontal:30.sw()),
-        child: Text("Favorites"),
-      ), automaticallyImplyLeading:false,),
-      body: GridView.count(
-        childAspectRatio: 0.81,
-        padding: EdgeInsets.symmetric(horizontal:3.sw(), vertical:2.sh()),
-        crossAxisCount: 2,
-        children: [
-           PopularProductSubtile(name: "Wireless Controller for PS4", price: "\$64.99", image_path: "assets/game.jpg",),
-           PopularProductSubtile(name: "Nike Sport White - Man Pant", price: "\$50.5", image_path: "assets/pants.jpg",),
-          PopularProductSubtile(name: "Gloves XC Omega - Polygon", price: "\$36.55", image_path: "assets/gloves.jpg",),
-          PopularProductSubtile(name: "Logitech Head", price: "\$20.2", image_path: "assets/headphones.jpg",),
+    return Scaffold(
+      appBar: AppBar(
+        title: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 30.sw()),
+          child: Text("Favorites"),
+        ),
+        automaticallyImplyLeading: false,
+      ),
+      body: Consumer<UserProvider>(
+        builder: (context, userProvider, child) {
+          var wishList = userProvider.wishList;
           
-           PopularProductSubtile(name: "Wireless Controller for PS4", price: "\$64.99", image_path: "assets/game.jpg",),
-           PopularProductSubtile(name: "Nike Sport White - Man Pant", price: "\$50.5", image_path: "assets/pants.jpg",),
-          PopularProductSubtile(name: "Gloves XC Omega - Polygon", price: "\$36.55", image_path: "assets/gloves.jpg",),
-          PopularProductSubtile(name: "Logitech Head", price: "\$20.2", image_path: "assets/headphones.jpg",),
-        ]
-        )
+          if (wishList == null || wishList.isEmpty) {
+            return Center(
+              child: Text("No items in wishlist"),
+            );
+          } else {
+            return GridView.builder(
+              itemCount: wishList.length,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.81,
+                mainAxisSpacing: 2.sh(),
+                crossAxisSpacing: 3.sw(),
+              ),
+              itemBuilder: (context, index) {
+                var item = wishList[index];
+                return TempComp(
+                  name: item["name"],
+                  price: item["price"],
+                  image_path: item["image_path"],
+                );
+              },
+            );
+          }
+        },
+      ),
     );
   }
 }

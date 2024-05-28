@@ -7,6 +7,7 @@ class MyProduct {
   final String cart_count;
   final String purchase_count;
   final String wish_list_count;
+
   MyProduct({
     this.name = "",
     this.price = "",
@@ -17,6 +18,16 @@ class MyProduct {
     this.purchase_count = "",
     this.wish_list_count = "",
   });
+
+  // Method to convert MyProduct instance to a Map
+  Map<String, dynamic> toJson() {
+    return {
+      'name': name,
+      'price': price,
+      'image_path': image_path,
+    };
+  }
+
   static MyProduct? fromMap(Map map) {
     return MyProduct(
       name: map["Name"],
@@ -27,6 +38,14 @@ class MyProduct {
       cart_count: map["cart_count"],
       purchase_count: map["purchase_count"],
       wish_list_count: map["wish_list_count"]
+    );
+  }
+
+  // Find a product by its name
+  static MyProduct? findProductByName(List<MyProduct> products, String name) {
+    return products.firstWhere(
+      (product) => product.name == name,
+      orElse: () => MyProduct(),
     );
   }
 }

@@ -14,7 +14,12 @@ class CategoryProvider extends ChangeNotifier {
     getAllProducts();
     notifyListeners();
   }
-  void getCategories() async {
+  Future<void>  initializeData() async {
+    await getCategories();
+    await getAllProducts();
+    notifyListeners();
+  }
+  Future<void>  getCategories() async {
     // all categories
     categories = await DataBaseService().fetchDocumentsWithBanner(collection:"Categories");
   }
@@ -41,7 +46,7 @@ class CategoryProvider extends ChangeNotifier {
     print("Error fetching map: $error");
   }
 }
-  void getAllProducts() async {
+  Future<bool> getAllProducts() async {
   // all products list.
     List all_categories = await DataBaseService().fetchDocumentsWithBanner(collection:"Categories");
 
@@ -63,5 +68,6 @@ class CategoryProvider extends ChangeNotifier {
       allProducts[all_categories[i]["name"]] = l;
     }
     notifyListeners();
+    return true;
   }
 }

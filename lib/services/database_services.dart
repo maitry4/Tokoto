@@ -24,12 +24,16 @@ class DataBaseService {
     required Map<String, dynamic> setOfValues,
   }) async {
     try {
+      print(setOfValues);
+      print("no database error");
       await FirebaseFirestore.instance
           .collection(collection)
           .doc(documentID)
           .update(setOfValues);
       return "Success";
     } catch (e) {
+      print("database errror");
+      print(e);
       return e.toString();
     }
   }

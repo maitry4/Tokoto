@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
+import 'package:tokoto/models/category_model.dart';
 
 class MyUser {
   final String fullnm;
@@ -11,8 +11,8 @@ class MyUser {
   final String langPref;
   final String role;
   final Map order_his;
-  final Map shop_cart;
-  final Map wishlist;
+  final List cartList;
+  final List wishlist;
   MyUser({
     this.fullnm = "",
     this.username = "",
@@ -23,8 +23,8 @@ class MyUser {
     this.role = "",
     this.langPref = "",
     this.order_his = const{},
-    this.shop_cart = const{},
-    this.wishlist = const{},
+    this.cartList = const[],
+    this.wishlist = const[],
   });
 
   static MyUser? fromSnap(DocumentSnapshot snap) {
@@ -38,7 +38,7 @@ class MyUser {
       phone_num: snapshot["Phone-Number"],
       order_his: snapshot["Order-History"],
       wishlist: snapshot["Wishlist"],
-      shop_cart: snapshot["Shopping-Cart"],
+      cartList: snapshot["Shopping-Cart"],
       role: snapshot["Role"],
       profile_pic: snapshot["Profile-Picture"],
       langPref: snapshot["Language-Preference"],

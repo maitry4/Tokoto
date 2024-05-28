@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:tokoto/providers/user_provider.dart';
 import 'package:tokoto/services/database_services.dart';
 
 class AuthService {
@@ -22,7 +24,7 @@ class AuthService {
         'Primary-Address':'',
         'Phone-Number':'',
         'Order-History': {},
-        'Wishlist': {},
+        'Wishlist': [],
         'Shopping-Cart':{},
         'Role':'customer',
         'Profile-Picture':"",

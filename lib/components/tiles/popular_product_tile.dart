@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tokoto/components/sub_components/popular_product_subtile.dart';
+import 'package:tokoto/components/sub_components/temp_comp.dart';
 import 'package:tokoto/models/category_model.dart';
 import 'package:tokoto/providers/category_provider.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';

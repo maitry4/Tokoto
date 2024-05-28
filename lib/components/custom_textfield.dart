@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final String text;
   final String label_text;
   void Function(String)? onChanged;
@@ -20,19 +20,24 @@ class CustomTextField extends StatelessWidget {
   });
 
   @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  @override
   Widget build(BuildContext context) {
     return Padding(
               padding: EdgeInsets.only(top:1.sh(), bottom: 1.sh(), right: 4.sw(), left: 4.sw()),
               child: TextField(
-                onChanged: onChanged,
-                obscureText: obscureText,
+                onChanged: widget.onChanged,
+                obscureText: widget.obscureText,
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(3.sh()),
                   ),
-                  hintText: text,
-                  labelText: label_text,
-                  suffixIcon: icon),
+                  hintText: widget.text,
+                  labelText: widget.label_text,
+                  suffixIcon: widget.icon),
                 ),
               
             );
