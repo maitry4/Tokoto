@@ -1,4 +1,8 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:get/get.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tokoto/models/auth_model.dart';
@@ -6,22 +10,23 @@ import 'package:tokoto/models/category_model.dart';
 import 'package:tokoto/services/database_services.dart';
 
 class UserController extends GetxController {
-  var emailId = FirebaseAuth.instance.currentUser!.email!.obs;
+  var emailId = "".obs;
   var wishList = RxList<dynamic>();
   var cartList = RxList<dynamic>();
   var userData = Rxn<MyUser>();
-
-  UserController() {
-    initializeData();
-  }
+  var profileImageURL = ''.obs;
 
   Future<void> initializeData() async {
-    String emailId = FirebaseAuth.instance.currentUser!.email!;
-    // get user data
-    userData.value = await MyUser.fromSnap(await DataBaseService().getUserData(
-        collection: "Users", documentID: emailId));
-    await getCartList();
-    await getWishList();
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      emailId.value = user.email ?? '';
+      // get user data
+      userData.value = await MyUser.fromSnap(await DataBaseService().getUserData(
+          collection: "Users", documentID: user.email!));
+      await getCartList();
+      await getWishList();
+      await initializeProfileImage();
+    }
   }
 
   Future<void> getWishList() async {
@@ -30,6 +35,76 @@ class UserController extends GetxController {
 
   Future<void> getCartList() async {
     cartList.value = userData.value!.cartList;
+  }
+  Future<void> initializeProfileImage() async {
+    String email = FirebaseAuth.instance.currentUser!.email!;
+    try {
+      DocumentSnapshot snap = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(email)
+          .get();
+      String image = (snap.data()! as dynamic)['Profile-Picture'];
+      profileImageURL.value = image;
+    } catch (e) {
+      Get.snackbar("Error", "Error loading profile picture");
+    }
+  }
+
+  Future<String> uploadFileToStorage(FilePickerResult? resFile) async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (resFile != null) {
+      File file = File(resFile.files.single.path!);
+      String fileName = user!.email!;
+      fileName = "$fileName.jpg";
+
+      try {
+        firebase_storage.Reference ref = firebase_storage
+            .FirebaseStorage.instance
+            .ref()
+            .child('profile_pics/$fileName');
+        firebase_storage.UploadTask uploadTask = ref.putFile(file);
+
+        uploadTask.whenComplete(() async {
+          try {
+            String downloadURL = await ref.getDownloadURL();
+            profileImageURL.value = downloadURL;
+            await DataBaseService().updateDocument(
+                collection: 'Users',
+                documentID: user.email!,
+                setOfValues: {"Profile-Picture": profileImageURL.value});
+          } catch (error) {
+            return "Failed to get download URL";
+          }
+        });
+          return "Success";
+      } catch (error) {
+        return "Failed to upload file";
+      }
+    } else {
+      return "No file selected";
+    }
+  }
+
+  Future<String> selectImage() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null) {
+      final res =await uploadFileToStorage(result);
+      if(res =="Success") {
+        return "Success";
+      }
+      else if(res == "Failed to get download URL") {
+        return "Failed to get download URL";
+      }
+      else if(res == "Failed to upload file") {
+        return "Failed to upload file";
+      }
+      else{
+        return "No file selected";
+      }
+
+    } else {
+      return "File selection cancelled";
+    }
   }
 
   Future<String> addToWishList(MyProduct prod) async {

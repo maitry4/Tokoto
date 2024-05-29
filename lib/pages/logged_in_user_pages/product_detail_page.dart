@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
+import 'package:tokoto/controllers/product_controller.dart';
 import 'package:tokoto/controllers/user_controller.dart';
 import 'package:tokoto/models/category_model.dart';
-import 'package:tokoto/providers/category_provider.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
 class ProductDetailPage extends StatelessWidget {
@@ -14,11 +13,11 @@ class ProductDetailPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final categoryProvider = Provider.of<CategoryProvider>(context);
+    final ProductController categoryController = Get.put(ProductController());
 
     // Flattening all products from different categories into a single list
     List<MyProduct> allProductsList = [];
-    categoryProvider.allProducts.forEach((categoryName, products) {
+    categoryController.allProducts.forEach((categoryName, products) {
       allProductsList.addAll(
           products.where((product) => product != null).cast<MyProduct>());
     });

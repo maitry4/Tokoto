@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 import 'package:tokoto/components/sub_components/temp_comp.dart';
 import 'package:tokoto/controllers/user_controller.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';

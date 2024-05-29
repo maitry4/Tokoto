@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tokoto/components/custom_button.dart';
+import 'package:tokoto/controllers/user_controller.dart';
 import 'package:tokoto/pages/home_page.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
 
 class LoginSuccessPage extends StatelessWidget {
-  const LoginSuccessPage({super.key});
+  final UserController userController = Get.put(UserController());
+  LoginSuccessPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,8 @@ class LoginSuccessPage extends StatelessWidget {
 
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.sw(), vertical: 18.sh()),
-                child: CustomButtton(onTap: () {
+                child: CustomButtton(onTap: () async {
+                  await userController.initializeData();
                   Navigator.pushReplacement(context,
                                 MaterialPageRoute(builder: (context) {
                               return const HomePage();

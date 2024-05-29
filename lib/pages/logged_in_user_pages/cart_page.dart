@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 import 'package:tokoto/components/pages/cart_tile.dart';
 import 'package:tokoto/components/custom_button.dart';
 import 'package:tokoto/controllers/user_controller.dart';

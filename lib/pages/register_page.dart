@@ -1,25 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tokoto/components/custom_button.dart';
 import 'package:tokoto/components/custom_textfield.dart';
+import 'package:tokoto/controllers/user_controller.dart';
 import 'package:tokoto/pages/home_page.dart';
 import 'package:tokoto/services/auth_service.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
-
-  @override
-  State<RegisterPage> createState() => _RegisterPageState();
-}
-
-class _RegisterPageState extends State<RegisterPage> {
-  String email = "";
-  String password = "";
-  String confirm_password = "";
+class RegisterPage extends StatelessWidget {
+  RegisterPage({super.key});
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
+  final UserController userController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
@@ -45,38 +39,26 @@ class _RegisterPageState extends State<RegisterPage> {
                     label_text: "Email",
                     my_controller: emailController,
                     obscureText: false,
-                    onChanged: (value) {
-                      setState(() {
-                        email = value;
-                      });
-                    }),
+                    ),
                 CustomTextField(
                   icon: Icon(Icons.lock_outlined),
                     text: "Enter your password",
                     label_text: "Password",
                     my_controller: passwordController,
                     obscureText: true,
-                    onChanged: (value) {
-                      setState(() {
-                        password = value;
-                      });
-                    }),
+                    ),
                 CustomTextField(
                     icon: Icon(Icons.lock_outlined),
                     text: "Re-enter your password",
                     label_text: "Confirm Password",
                     my_controller: confirmPasswordController,
                     obscureText: true,
-                    onChanged: (value) {
-                      setState(() {
-                        confirm_password = value;
-                      });
-                    }),
+                    ),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 3.sh()),
                   child: CustomButtton(
                       onTap: () async {
-                        if (passwordController.text !=
+                        if (passwordController.text!=
                             confirmPasswordController.text) {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
@@ -96,13 +78,14 @@ class _RegisterPageState extends State<RegisterPage> {
                         );
                         
                         final message = await AuthService()
-                            .registration(email: email, password: password);
+                            .registration(email: emailController.text, password: passwordController.text);
             
                         // Hide the progress indicator
                         Navigator.pop(context);
             
                         // redirect to home page on successful registration
                         if (message == 'Success') {
+                          await userController.initializeData();
                           Navigator.pushReplacement(context,
                               MaterialPageRoute(builder: (context) {
                             return const HomePage();

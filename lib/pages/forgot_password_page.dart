@@ -13,7 +13,6 @@ class ForgotPasswordPage extends StatefulWidget {
 }
 
 class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
-  String email = "";
   TextEditingController emailController = TextEditingController();
 
   @override
@@ -42,11 +41,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                     text: "Enter your email",
                     label_text: "Email",
                     my_controller: emailController,
-                    onChanged: (value) {
-                      setState(() {
-                        email = value;
-                      });
-                    },
                     obscureText: false,
                   ),
                 ),
@@ -62,7 +56,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         },
                       );
                       
-                      final message = await AuthService().resetPassword(email);
+                      final message = await AuthService().resetPassword(emailController.text);
             
                       // Hide the progress indicator
                       Navigator.pop(context);
@@ -89,7 +83,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           onTap: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return const RegisterPage();
+                              return RegisterPage();
                             }));
                           },
                           child: Text(" Sign Up",

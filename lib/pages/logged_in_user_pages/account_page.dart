@@ -20,8 +20,8 @@ class AccountPage extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   child: Row(
                     children: [
-                      Text("Username: "),
-                      Text(userController.userData!.toString()),
+                      Text("Email: "),
+                      Text(userController.emailId.toString()),
                       IconButton(onPressed: () {}, icon: Icon(Icons.edit, size: 4.sw(),))
                     ],
                   ),

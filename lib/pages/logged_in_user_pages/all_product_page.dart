@@ -1,19 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:tokoto/components/sub_components/temp_comp.dart';
+import 'package:tokoto/controllers/product_controller.dart';
 import 'package:tokoto/models/category_model.dart';
-import 'package:tokoto/providers/category_provider.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
-class AllProductPage extends StatefulWidget {
-  const AllProductPage({
-    super.key,});
+class AllProductPage extends StatelessWidget {
+  final ProductController categoryController = Get.put(ProductController());
+   AllProductPage({super.key,});
 
-  @override
-  State<AllProductPage> createState() => _AllProductPageState();
-}
-
-class _AllProductPageState extends State<AllProductPage> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -23,11 +18,11 @@ class _AllProductPageState extends State<AllProductPage> {
       ),),
       body:Container(
         padding: EdgeInsets.symmetric(horizontal: 2.sw()),
-        child: Consumer<CategoryProvider>(
-        builder: (context, value, child) {
+        child: Obx(
+        () {
           // Flattening all products from different categories into a single list
           List<dynamic> allProductsList = [];
-          value.allProducts.forEach((categoryName, products) {
+          categoryController.allProducts.forEach((categoryName, products) {
             allProductsList.addAll(products.where((product) => product != null).cast<MyProduct>());
           });
         

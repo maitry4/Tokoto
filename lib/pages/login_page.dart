@@ -1,30 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:tokoto/components/custom_button.dart';
 import 'package:tokoto/components/custom_icon.dart';
 import 'package:tokoto/components/custom_textfield.dart';
+import 'package:tokoto/controllers/user_controller.dart';
 import 'package:tokoto/pages/forgot_password_page.dart';
 import 'package:tokoto/pages/login_sucess_page.dart';
 import 'package:tokoto/pages/register_page.dart';
-import 'package:tokoto/providers/user_provider.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 import 'package:tokoto/services/auth_service.dart';
 import 'package:get/get.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class LoginPage extends StatelessWidget {
+  LoginPage({super.key});
 
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  String email = "";
-  String password = "";
   bool isChecked = false;
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  final UserController userController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +48,6 @@ class _LoginPageState extends State<LoginPage> {
                     text: "Enter your email",
                     label_text: "Email",
                     my_controller: emailController,
-                    onChanged: (value) {
-                      setState(() {
-                        email = value;
-                      });
-                    },
                     obscureText: false,
                   ),
                   CustomTextField(
@@ -67,11 +55,6 @@ class _LoginPageState extends State<LoginPage> {
                     text: "Enter your password",
                     label_text: "Password",
                     my_controller: passwordController,
-                    onChanged: (value) {
-                      setState(() {
-                        password = value;
-                      });
-                    },
                     obscureText: true,
                   ),
                   Padding(
@@ -86,9 +69,6 @@ class _LoginPageState extends State<LoginPage> {
                               value: isChecked,
                               activeColor: Theme.of(context).primaryColor,
                               onChanged: (bool? value) {
-                                setState(() {
-                                  isChecked = value!;
-                                });
                               },
                             ),
                             const Text("Remember me"),
@@ -101,14 +81,10 @@ class _LoginPageState extends State<LoginPage> {
                                 return const ForgotPasswordPage();
                               }));
                             },
-                            child: GestureDetector(
-                              onTap: () {
-                                Get.toNamed("/forgot_password");
-                              },
-                              child: const Text("Forgot Password",
+                            child:  const Text("Forgot Password",
                                   style: TextStyle(
                                     decoration: TextDecoration.underline,
-                                  )),
+                                  )
                             )),
                       ],
                     ),
@@ -126,17 +102,19 @@ class _LoginPageState extends State<LoginPage> {
                       );
 
                       final message = await AuthService()
-                          .login(email: email, password: password);
+                          .login(email: emailController.text, password: passwordController.text);
 
                       // Hide the progress indicator
                       Navigator.pop(context);
 
                       if (message == 'Success') {
                         // Initialize data after successful login
-                        await Provider.of<UserProvider>(context, listen: false)
-                            .initializeData();
+                        await userController.initializeData();
                         // Redirect to the home page
-                        Get.offAllNamed("/login_success");
+                        Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return LoginSuccessPage();
+                            }));
                       } else {
                         // Show error message
                         ScaffoldMessenger.of(context).showSnackBar(
@@ -193,7 +171,7 @@ class _LoginPageState extends State<LoginPage> {
                           onTap: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return const RegisterPage();
+                              return RegisterPage();
                             }));
                           },
                           child: Text(" Sign Up",

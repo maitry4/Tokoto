@@ -43,7 +43,6 @@ dependencies:
   firebase_storage: 11.6.9
   file_picker: ^6.1.1
   shared_preferences: ^2.2.3
-  provider:
   get:
 
 dev_dependencies:

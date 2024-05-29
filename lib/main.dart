@@ -1,12 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tokoto/firebase_options.dart';
 import 'package:tokoto/pages/auth_page.dart';
 import 'package:tokoto/pages/onboarding_screen.dart';
-import 'package:tokoto/providers/category_provider.dart';
-import 'package:tokoto/providers/user_provider.dart';
 import 'package:tokoto/responsive/size_config.dart';
 import 'package:tokoto/themes/light_theme.dart';
 
@@ -19,16 +16,7 @@ void main() async {
   final pres = await SharedPreferences.getInstance();
   final onboarding = pres.getBool('onboarding') ?? false;
   
-  runApp(
-   MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (context) => UserProvider()),
-        ChangeNotifierProvider(create: (context) => CategoryProvider()),   
-        // Add more providers if needed
-      ],
-      child: MyApp(onboarding: onboarding),
-    ),
-  );
+  runApp(MyApp(onboarding: onboarding),);
 }
 
 class MyApp extends StatelessWidget {
@@ -42,22 +30,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: lightTheme,
       debugShowCheckedModeBanner: false,
-      home: FutureBuilder(
-        future: Provider.of<CategoryProvider>(context, listen: false).getAllProducts(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // While data is loading, show a loading indicator or splash screen
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(), // Or any other loading indicator
-              ),
-            );
-          } else {
-            // Once data is loaded, navigate to the main screen
-            return onboarding ? AuthPage() : OnBoardingScreen();
-          }
-        },
-      ),
+      home: onboarding ? AuthPage() : OnBoardingScreen()
     );
   }
 }

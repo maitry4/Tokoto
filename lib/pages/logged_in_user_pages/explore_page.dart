@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
 import 'package:tokoto/components/custom_search_bar.dart';
 import 'package:tokoto/components/tiles/categories_tile.dart';
 import 'package:tokoto/components/custom_icon.dart';
@@ -7,24 +7,18 @@ import 'package:tokoto/components/tiles/explore_tile_2.dart';
 import 'package:tokoto/components/tiles/explore_tile_purple.dart';
 import 'package:tokoto/components/tiles/popular_product_tile.dart';
 import 'package:tokoto/components/tiles/special_for_you_tile.dart';
+import 'package:tokoto/controllers/product_controller.dart';
 import 'package:tokoto/pages/logged_in_user_pages/cart_page.dart';
 import 'package:tokoto/pages/logged_in_user_pages/category_page.dart';
 import 'package:tokoto/pages/logged_in_user_pages/all_product_page.dart';
-import 'package:tokoto/providers/category_provider.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
-class ExplorePage extends StatefulWidget {
-  const ExplorePage({super.key});
-
-  @override
-  State<ExplorePage> createState() => _ExplorePageState();
-}
-
-class _ExplorePageState extends State<ExplorePage> with TickerProviderStateMixin {
+class ExplorePage extends StatelessWidget {
+  final ProductController categoryController = Get.put(ProductController());
+  ExplorePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TabController _tabController = TabController(length: 3, vsync: this);
      return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -64,18 +58,7 @@ class _ExplorePageState extends State<ExplorePage> with TickerProviderStateMixin
               // Tile 2
               const ExploreTile2(),
               // Special
-              FutureBuilder(
-                future: Provider.of<CategoryProvider>(context, listen: false).getAllProducts(),
-                builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            // While data is loading, show a loading indicator or splash screen
-            return const Scaffold(
-              body: Center(
-                child: CircularProgressIndicator(), // Or any other loading indicator
-              ),
-            );
-          } else {
-                return Column(
+              Column(
                   children: [
                     Padding(
                       padding: EdgeInsets.only(left: 2.sh(), right: 3.sh(), top: 2.sh(), bottom: 1.sh()),
@@ -95,7 +78,7 @@ class _ExplorePageState extends State<ExplorePage> with TickerProviderStateMixin
                     ),
                      Padding(
                   padding: EdgeInsets.only(left: 3.sw()),
-                  child: const Special4UTile(),
+                  child: Special4UTile(),
                 ),
                 // Popular Products
                 Padding(
@@ -110,7 +93,7 @@ class _ExplorePageState extends State<ExplorePage> with TickerProviderStateMixin
                       GestureDetector(
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(builder: (context) {
-                              return const AllProductPage();
+                              return AllProductPage();
                             }));
                           },
                           child: const Text(
@@ -137,17 +120,17 @@ class _ExplorePageState extends State<ExplorePage> with TickerProviderStateMixin
                     ],
                   ),
                 ),
-                // TabBar
-                Consumer<CategoryProvider>(
-                  builder: (context, value, child) {
+                Obx(
+                  () {
                     return Column(
+                // TabBar
                       children: [
                         TabBar(
                           labelColor: Theme.of(context).primaryColor,
                           indicatorColor: Theme.of(context).primaryColor,
-                          controller: _tabController,
+                          controller: categoryController.tabController,
                           isScrollable: true,
-                          tabs: value.categories.map((category) {
+                          tabs: categoryController.categories.map((category) {
                             return Tab(text: category["name"]);
                           }).toList(),
                         ),
@@ -158,8 +141,8 @@ class _ExplorePageState extends State<ExplorePage> with TickerProviderStateMixin
                           child: Padding(
                             padding: EdgeInsets.all(2.sh()),
                             child: TabBarView(
-                              controller: _tabController,
-                              children: value.categories.map((category) {
+                              controller: categoryController.tabController,
+                              children: categoryController.categories.map((category) {
                                 return GestureDetector(
                                   onTap: () {
                                     print("whts wrong");
@@ -171,7 +154,7 @@ class _ExplorePageState extends State<ExplorePage> with TickerProviderStateMixin
                                   },
                                   child: CatTile(
                                     category: category['name'], // Access document name
-                                    image_path: category['bannerImage'], // Access Banner_Image field value
+                                    image_path: category['bannerImage'], // Access 
                                     brands: "",
                                   ),
                                 );
@@ -185,7 +168,7 @@ class _ExplorePageState extends State<ExplorePage> with TickerProviderStateMixin
                 ),
                             
                   ],
-                );}})
+                )
              ],
               )
           ),

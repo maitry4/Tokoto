@@ -1,36 +1,30 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:tokoto/providers/category_provider.dart';
+import 'package:get/get.dart';
+import 'package:tokoto/controllers/product_controller.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 import 'package:tokoto/components/sub_components/temp_comp.dart';
 
-class CategoryPage extends StatefulWidget {
+class CategoryPage extends StatelessWidget {
   final String category;
-  const CategoryPage({super.key, required this.category});
-
-  @override
-  State<CategoryPage> createState() => _CategoryPageState();
-}
-
-class _CategoryPageState extends State<CategoryPage> {
+   CategoryPage({super.key, required this.category});
 
   @override
   Widget build(BuildContext context) {
-    // Retrieve the CategoryProvider instance
-    CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context, listen: false);
-    categoryProvider.getProducts(widget.category);
+    // Retrieve the CategoryController instance
+    final ProductController categoryController = Get.put(ProductController());
+    // Fetch products for the category
+    categoryController.getProducts(category);
+
     return Scaffold(
         appBar: AppBar(
           title: Padding(
             padding: EdgeInsets.symmetric(horizontal: 30.sw()),
-            child: Text(widget.category),
+            child: Text(category),
           ),
         ),
-        body: Consumer<CategoryProvider>(
-        builder: (context, categoryProvider, _) {
-          if (categoryProvider.keys.isEmpty) {
-            return CircularProgressIndicator(); // Show loading indicator while fetching data
-          }
+        body: Obx(
+        () {
+          
 
           return GridView.builder(
             padding: EdgeInsets.symmetric(vertical: 4, horizontal: 2),
@@ -38,11 +32,11 @@ class _CategoryPageState extends State<CategoryPage> {
               crossAxisCount: 2,
               childAspectRatio: 0.87,
             ),
-            itemCount: categoryProvider.keys.length,
+            itemCount: categoryController.keys.length,
             itemBuilder: (context, index) {
-              final currentKey = categoryProvider.keys[index];
-              final currentImage = categoryProvider.images[index];
-              final currentPrice = categoryProvider.prices[index];
+              final currentKey = categoryController.keys[index];
+              final currentImage = categoryController.images[index];
+              final currentPrice = categoryController.prices[index];
 
               return Padding(
                 padding: const EdgeInsets.all(8.0),
