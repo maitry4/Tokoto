@@ -24,8 +24,6 @@ class CategoryPage extends StatelessWidget {
         ),
         body: Obx(
         () {
-          
-
           return GridView.builder(
             padding: EdgeInsets.symmetric(vertical: 4, horizontal: 2),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -41,6 +39,7 @@ class CategoryPage extends StatelessWidget {
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: TempComp(
+                  is_discounted: false,
                   name: currentKey,
                   price: currentPrice,
                   image_path: currentImage,

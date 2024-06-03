@@ -14,7 +14,7 @@ class FavoritePage extends StatelessWidget {
       appBar: AppBar(
         title: Padding(
           padding: EdgeInsets.symmetric(horizontal: 30.sw()),
-          child: Text("Favorites"),
+          child: Text("Favorites".tr),
         ),
         automaticallyImplyLeading: false,
       ),
@@ -31,13 +31,14 @@ class FavoritePage extends StatelessWidget {
               itemCount: wishList.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
-                childAspectRatio: 0.81,
+                childAspectRatio: 0.85,
                 mainAxisSpacing: 2.sh(),
                 crossAxisSpacing: 3.sw(),
               ),
               itemBuilder: (context, index) {
                 var item = wishList[index];
                 return TempComp(
+                  is_discounted: false,
                   name: item["name"],
                   price: item["price"],
                   image_path: item["image_path"],

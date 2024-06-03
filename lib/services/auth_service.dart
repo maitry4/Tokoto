@@ -23,8 +23,9 @@ class AuthService {
         'Phone-Number':'',
         'Order-History': {},
         'Wishlist': [],
-        'Shopping-Cart':{},
+        'Shopping-Cart':[],
         'Role':'customer',
+        'Points':'0',
         'Profile-Picture':"",
         'Language-Preference':"",
       };

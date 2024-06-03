@@ -21,36 +21,36 @@ class RegisterPage extends StatelessWidget {
         appBar: AppBar(
             title: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 26.sw()),
-                child: Text("Sign Up", style: TextStyle(fontSize: 2.sh())))),
+                child: Text("Sign Up".tr, style: TextStyle(fontSize: 2.sh())))),
         body: ListView(children: [
           Padding(
             padding: EdgeInsets.only(top:3.sh()),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Register Account",
+                Text("Register Account".tr,
                     style:
                         TextStyle(fontSize: 3.sh(), fontWeight: FontWeight.w500)),
-                const Text(
-                    "Complete your details or continue\n              with social media"),
+                 Text(
+                    "Complete your details or continue\n              with social media".tr),
                 CustomTextField(
                   icon: Icon(Icons.email_outlined),
-                    text: "Enter your email",
-                    label_text: "Email",
+                    text: "Enter your email".tr,
+                    label_text: "Email".tr,
                     my_controller: emailController,
                     obscureText: false,
                     ),
                 CustomTextField(
                   icon: Icon(Icons.lock_outlined),
-                    text: "Enter your password",
-                    label_text: "Password",
+                    text: "Enter your password".tr,
+                    label_text: "Password".tr,
                     my_controller: passwordController,
                     obscureText: true,
                     ),
                 CustomTextField(
                     icon: Icon(Icons.lock_outlined),
-                    text: "Re-enter your password",
-                    label_text: "Confirm Password",
+                    text: "Re-enter your password".tr,
+                    label_text: "Confirm Password".tr,
                     my_controller: confirmPasswordController,
                     obscureText: true,
                     ),
@@ -99,10 +99,10 @@ class RegisterPage extends StatelessWidget {
                           ),
                         );
                       },
-                      text: "Continue"),
+                      text: "Continue".tr),
                 ),
-                const Text(
-                    "By continuing your confirm that you agree\n            with our Term and condition"),
+                Text(
+                    "By continuing your confirm that you agree\n            with our Term and condition".tr),
               ],
             ),
           ),

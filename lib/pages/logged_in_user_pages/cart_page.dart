@@ -24,8 +24,8 @@ class CartPage extends StatelessWidget {
             padding:  EdgeInsets.symmetric(horizontal:25.sw()),
             child: Column(
               children: [
-                Text("Your Cart", style: TextStyle(fontSize:4.sw()),),
-                Text("${cartList.length} items", style: TextStyle(fontSize:3.sw()),),
+                Text("Your Cart".tr, style: TextStyle(fontSize:4.sw()),),
+                Text("${cartList.length}"+"items".tr, style: TextStyle(fontSize:3.sw()),),
               ],
             ),
           )
@@ -65,7 +65,7 @@ class CartPage extends StatelessWidget {
                       children: [
                         Icon(Icons.document_scanner,color:Theme.of(context).primaryColor),
                         
-                        Text("Add voucher code >"),
+                        Text("Add voucher code".tr+" >"),
                       ]
                     ),
                 SizedBox(
@@ -77,11 +77,11 @@ class CartPage extends StatelessWidget {
                     Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Total:"),
+                        Text("Total".tr+":"),
                         Text("\$${totalPrice.toStringAsFixed(2)}"),
                       ],
                     ),
-                    Container(width: 35.sw(),child: CustomButtton(onTap: () {}, text: "Check Out"))
+                    Container(width: 35.sw(),child: CustomButtton(onTap: () {}, text: "Check Out".tr))
                   ]
                 ),
                           

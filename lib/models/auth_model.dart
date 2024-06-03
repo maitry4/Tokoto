@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tokoto/models/category_model.dart';
 
 class MyUser {
   final String fullnm;
@@ -10,6 +9,7 @@ class MyUser {
   final String gen;
   final String langPref;
   final String role;
+  final String points;
   final Map order_his;
   final List cartList;
   final List wishlist;
@@ -21,6 +21,7 @@ class MyUser {
     this.profile_pic = "",
     this.gen = "",
     this.role = "",
+    this.points = "",
     this.langPref = "",
     this.order_his = const{},
     this.cartList = const[],
@@ -40,6 +41,7 @@ class MyUser {
       wishlist: snapshot["Wishlist"],
       cartList: snapshot["Shopping-Cart"],
       role: snapshot["Role"],
+      points: snapshot["Points"],
       profile_pic: snapshot["Profile-Picture"],
       langPref: snapshot["Language-Preference"],
     );

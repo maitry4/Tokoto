@@ -1,14 +1,70 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tokoto/components/custom_icon.dart';
 import 'package:tokoto/controllers/user_controller.dart';
 import 'package:tokoto/pages/logged_in_user_pages/account_page.dart';
+import 'package:tokoto/pages/logged_in_user_pages/faq_page.dart';
+import 'package:tokoto/pages/logged_in_user_pages/settings_page.dart';
 import 'package:tokoto/pages/login_page.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 import 'package:tokoto/services/auth_service.dart';
 
 class ProfilePage extends StatelessWidget {
   ProfilePage({super.key});
+  Future<void> _pickAndCropImage(
+      ImageSource source, BuildContext context) async {
+    final pickedFile = await ImagePicker().pickImage(source: source);
+    if (pickedFile != null) {
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedFile.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9,
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false,
+          ),
+          IOSUiSettings(
+            minimumAspectRatio: 1.0,
+          ),
+        ],
+      );
+
+      if (croppedFile != null) {
+        File file = File(croppedFile.path);
+        String result = await userController.uploadFileToStorage(file);
+        if (result == "Success") {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Image uploaded successfully')),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Failed to upload image')),
+          );
+        }
+      } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('No image selected')),
+          );
+      }
+    } else {
+       ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('No image selected')),
+          );
+    }
+  }
 
   final UserController userController = Get.put(UserController());
 
@@ -22,7 +78,7 @@ class ProfilePage extends StatelessWidget {
             Padding(
                 padding:
                     EdgeInsets.symmetric(horizontal: 40.sw(), vertical: 4.sh()),
-                child: Text("Profile")),
+                child: Text("Profile".tr)),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -42,32 +98,64 @@ class ProfilePage extends StatelessWidget {
                   Positioned(
                     child: IconButton(
                       onPressed: () async {
-                        // Start showing the circular progress indicator
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        },
-                      );
-
-                        final message = await userController.selectImage();
-                        // Hide the progress indicator
-                      Navigator.pop(context);
-                        if(message=="Success") {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Image selected Successfully"),
-                            ),
-                          );
-                        } else{
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(message!),
-                            ),
-                          );
-                        }
+                        showModalBottomSheet(
+                          backgroundColor: Colors.orange[50],
+                          context: context,
+                          builder: (builder) {
+                            return Padding(
+                              padding: const EdgeInsets.all(18.0),
+                              child: SizedBox(
+                                width: MediaQuery.of(context).size.width,
+                                height:
+                                    MediaQuery.of(context).size.height / 4.5,
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () async {
+                                          Navigator.of(context).pop();
+                                          await _pickAndCropImage(
+                                              ImageSource.gallery, context);
+                                        },
+                                        child: const SizedBox(
+                                          child: Column(
+                                            children: [
+                                              Icon(
+                                                Icons.image,
+                                                size: 70,
+                                              ),
+                                              Text("Gallery")
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: InkWell(
+                                        onTap: () async {
+                                          Navigator.of(context).pop();
+                                          await _pickAndCropImage(
+                                              ImageSource.camera, context);
+                                        },
+                                        child: const SizedBox(
+                                          child: Column(
+                                            children: [
+                                              Icon(
+                                                Icons.camera_alt,
+                                                size: 70,
+                                              ),
+                                              Text("Camera")
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        );
                       },
                       icon: CustomIcon(
                           icon: Icon(Icons.camera_alt_outlined), padding: 2),
@@ -81,7 +169,7 @@ class ProfilePage extends StatelessWidget {
             SizedBox(height: 2.sh()),
             GestureDetector(
               child: ItemProfile(
-                  title: 'My Account', iconData: Icons.person_outline),
+                  title: 'My Account'.tr, iconData: Icons.person_outline),
               onTap: () {
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
                   return AccountPage();
@@ -90,16 +178,31 @@ class ProfilePage extends StatelessWidget {
             ),
             SizedBox(height: 2.sh()),
             ItemProfile(
-                title: 'Notifications', iconData: Icons.notifications_outlined),
+                title: 'Notifications'.tr,
+                iconData: Icons.notifications_outlined),
             SizedBox(height: 2.sh()),
-            ItemProfile(title: 'Settings', iconData: Icons.settings),
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return SettingsPage();
+                  }));
+                },
+                child: ItemProfile(
+                    title: 'Settings'.tr, iconData: Icons.settings)),
             SizedBox(height: 2.sh()),
-            ItemProfile(title: 'Help Center', iconData: Icons.question_mark),
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return FAQPage();
+                  }));
+                },
+                child: ItemProfile(
+                    title: 'Help Center'.tr, iconData: Icons.question_mark)),
             SizedBox(
               height: 2.sh(),
             ),
             GestureDetector(
-                child: ItemProfile(title: 'Log Out', iconData: Icons.logout),
+                child: ItemProfile(title: 'Log Out'.tr, iconData: Icons.logout),
                 onTap: () async {
                   try {
                     userController.clearUserData();

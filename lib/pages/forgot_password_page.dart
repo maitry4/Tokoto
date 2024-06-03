@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tokoto/components/custom_button.dart';
 import 'package:tokoto/components/custom_textfield.dart';
 import 'package:tokoto/pages/register_page.dart';
@@ -21,7 +22,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         appBar: AppBar(
             title: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 17.sw()),
-                child: Text("Forgot Password",
+                child: Text("Forgot Password".tr,
                     style: TextStyle(fontSize: 2.sh())))),
         body: ListView(children: [
           Padding(
@@ -29,17 +30,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Forgot Password",
+                Text("Forgot Password".tr,
                     style:
                         TextStyle(fontSize: 3.sh(), fontWeight: FontWeight.w500)),
-                const Text(
-                    "Please enter your email and we will send\n      you a link to return to your account"),
+                 Text(
+                    "Please enter your email and we will send\n      you a link to return to your account".tr),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 1.sh()),
                   child: CustomTextField(
                     icon:Icon(Icons.email_outlined),
-                    text: "Enter your email",
-                    label_text: "Email",
+                    text: "Enter your email".tr,
+                    label_text: "Email".tr,
                     my_controller: emailController,
                     obscureText: false,
                   ),
@@ -72,13 +73,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         content: Text(message),
                       ));
                     },
-                    text: "Continue"),
+                    text: "Continue".tr),
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 2.sh()),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("Don't have an account?"),
+                       Text("I do not have an account".tr),
                       GestureDetector(
                           onTap: () {
                             Navigator.push(context,
@@ -86,7 +87,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                               return RegisterPage();
                             }));
                           },
-                          child: Text(" Sign Up",
+                          child: Text(" "+"Sign Up".tr,
                               style: TextStyle(
                                   color: Theme.of(context).primaryColor,))),
                     ],

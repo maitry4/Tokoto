@@ -7,6 +7,7 @@ class MyProduct {
   final String cart_count;
   final String purchase_count;
   final String wish_list_count;
+  final String discount_percent;
 
   MyProduct({
     this.name = "",
@@ -17,6 +18,7 @@ class MyProduct {
     this.cart_count = "",
     this.purchase_count = "",
     this.wish_list_count = "",
+    this.discount_percent = "",
   });
 
   // Method to convert MyProduct instance to a Map
@@ -37,7 +39,8 @@ class MyProduct {
       reviews: map["Reviews"],
       cart_count: map["cart_count"],
       purchase_count: map["purchase_count"],
-      wish_list_count: map["wish_list_count"]
+      wish_list_count: map["wish_list_count"],
+      discount_percent: map["discount_percent"]
     );
   }
 

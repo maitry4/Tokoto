@@ -14,7 +14,7 @@ class AllProductPage extends StatelessWidget {
     return  Scaffold(
       appBar: AppBar(title: Padding(
         padding:  EdgeInsets.symmetric(horizontal:23.sw()),
-        child: Text("Products", style: TextStyle(fontSize:4.sw()),),
+        child: Text("Products".tr, style: TextStyle(fontSize:4.sw()),),
       ),),
       body:Container(
         padding: EdgeInsets.symmetric(horizontal: 2.sw()),
@@ -29,7 +29,7 @@ class AllProductPage extends StatelessWidget {
           return GridView.builder(
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2, // Number of columns in the grid
-              childAspectRatio: 0.95, // Aspect ratio of each item
+              childAspectRatio: 0.81, // Aspect ratio of each item
               // crossAxisSpacing: 10,
               // mainAxisSpacing: 10,
             ),
@@ -37,6 +37,7 @@ class AllProductPage extends StatelessWidget {
             itemBuilder: (context, index) {
               final product = allProductsList[index];
               return TempComp(
+                is_discounted: false,
                 name: product.name,
                 price: product.price,
                 image_path: product.image_path,

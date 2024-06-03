@@ -15,7 +15,11 @@ class UserController extends GetxController {
   var cartList = RxList<dynamic>();
   var userData = Rxn<MyUser>();
   var profileImageURL = ''.obs;
-
+  @override
+  void onInit() {
+    super.onInit();
+    initializeData();
+  }
   Future<void> initializeData() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user != null) {
@@ -28,7 +32,14 @@ class UserController extends GetxController {
       await initializeProfileImage();
     }
   }
-
+  
+  void updatePoints(newPoints) async {
+    String email = await FirebaseAuth.instance.currentUser!.email!;
+    DataBaseService().updateDocument(collection: "Users", documentID: email, setOfValues: {"Points":newPoints});
+    userData.value = await MyUser.fromSnap(await DataBaseService().getUserData(
+        collection: "Users", documentID: email));
+    update();
+  }
   Future<void> getWishList() async {
     wishList.value = userData.value!.wishlist;
   }
@@ -50,12 +61,19 @@ class UserController extends GetxController {
     }
   }
 
-  Future<String> uploadFileToStorage(FilePickerResult? resFile) async {
+  Future<void> updateData(String field, String value) async {
+    String email = await FirebaseAuth.instance.currentUser!.email!;
+    await DataBaseService().updateDocument(collection: "Users", documentID: email, setOfValues: {field:value});
+    // get user data
+    userData.value = await MyUser.fromSnap(await DataBaseService().getUserData(
+        collection: "Users", documentID: email));
+    update();
+  }
+
+  Future<String> uploadFileToStorage(File file) async {
     User? user = FirebaseAuth.instance.currentUser;
-    if (resFile != null) {
-      File file = File(resFile.files.single.path!);
-      String fileName = user!.email!;
-      fileName = "$fileName.jpg";
+    if (file != null && user != null) {
+      String fileName = "${user.email}.jpg";
 
       try {
         firebase_storage.Reference ref = firebase_storage
@@ -64,49 +82,24 @@ class UserController extends GetxController {
             .child('profile_pics/$fileName');
         firebase_storage.UploadTask uploadTask = ref.putFile(file);
 
-        uploadTask.whenComplete(() async {
-          try {
-            String downloadURL = await ref.getDownloadURL();
-            profileImageURL.value = downloadURL;
-            await DataBaseService().updateDocument(
-                collection: 'Users',
-                documentID: user.email!,
-                setOfValues: {"Profile-Picture": profileImageURL.value});
-          } catch (error) {
-            return "Failed to get download URL";
-          }
-        });
-          return "Success";
-      } catch (error) {
-        return "Failed to upload file";
-      }
-    } else {
-      return "No file selected";
-    }
-  }
+        await uploadTask;
+        String downloadURL = await ref.getDownloadURL();
+        profileImageURL.value = downloadURL;
 
-  Future<String> selectImage() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      final res =await uploadFileToStorage(result);
-      if(res =="Success") {
+        await DataBaseService().updateDocument(
+            collection: 'Users',
+            documentID: user.email!,
+            setOfValues: {"Profile-Picture": profileImageURL.value});
+
         return "Success";
-      }
-      else if(res == "Failed to get download URL") {
-        return "Failed to get download URL";
-      }
-      else if(res == "Failed to upload file") {
+      } catch (error) {
+        print(error);
         return "Failed to upload file";
       }
-      else{
-        return "No file selected";
-      }
-
     } else {
-      return "File selection cancelled";
+      return "No file selected or user not logged in";
     }
   }
-
   Future<String> addToWishList(MyProduct prod) async {
     bool exists = wishList.any((item) => item["name"] == prod.name && item["price"] == prod.price && item["image_path"] == prod.image_path);
     if(!exists){

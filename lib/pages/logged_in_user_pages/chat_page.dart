@@ -1,51 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'dart:io';
+import 'package:tokoto/components/custom_button.dart';
+import 'package:tokoto/controllers/user_controller.dart';
 
-class ChatPage extends StatefulWidget {
+class ChatPage extends StatelessWidget {
   const ChatPage({super.key});
-
-  @override
-  State<ChatPage> createState() => _ChatPageState();
-}
-
-class _ChatPageState extends State<ChatPage> {
-    TextEditingController _textEditingController = TextEditingController();
-  String _textFieldValue = '';
-
-  @override
-  void dispose() {
-    _textEditingController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Text Field Example'),
+        title: Text('Chat Page'.tr),
+        automaticallyImplyLeading: false,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextField(
-              controller: _textEditingController,
-              onChanged: (value) {
-                setState(() {
-                  _textFieldValue = value;
-                });
-              },
-              decoration: InputDecoration(
-                labelText: 'Enter some text',
-              ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Text Field Value: $_textFieldValue',
-              style: TextStyle(fontSize: 20),
-            ),
-          ],
-        ),
-      ),
+      body:Text("Chat"),
     );
   }
 }

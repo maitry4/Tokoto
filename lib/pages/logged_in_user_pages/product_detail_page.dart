@@ -25,7 +25,7 @@ class ProductDetailPage extends StatelessWidget {
         MyProduct.findProductByName(allProductsList, productName);
 
     return Scaffold(
-      appBar: AppBar(title: Text("Product Details")),
+      appBar: AppBar(title: Text("Product Details".tr)),
       body: Center(
         child: Column(
           children: [

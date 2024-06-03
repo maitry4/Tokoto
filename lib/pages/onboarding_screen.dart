@@ -23,7 +23,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     pres.setBool("onboarding", true);
 
     if(!mounted)return;
-    Navigator.push(
+    Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(builder: (context) {
                       return  AuthPage();
