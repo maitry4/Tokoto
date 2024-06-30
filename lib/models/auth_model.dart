@@ -10,7 +10,7 @@ class MyUser {
   final String langPref;
   final String role;
   final String points;
-  final Map order_his;
+  final List order_his;
   final List cartList;
   final List wishlist;
   MyUser({
@@ -23,7 +23,7 @@ class MyUser {
     this.role = "",
     this.points = "",
     this.langPref = "",
-    this.order_his = const{},
+    this.order_his = const[],
     this.cartList = const[],
     this.wishlist = const[],
   });

@@ -15,7 +15,6 @@ import 'package:tokoto/pages/logged_in_user_pages/cart_page.dart';
 import 'package:tokoto/pages/logged_in_user_pages/category_page.dart';
 import 'package:tokoto/pages/logged_in_user_pages/all_product_page.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
-import 'package:tokoto/responsive/size_config.dart';
 
 class ExplorePage extends StatelessWidget {
   final ProductController categoryController = Get.put(ProductController());
@@ -25,39 +24,31 @@ class ExplorePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RxBool isSearching = false.obs;
-    bool some = false; // Rx variable to track search state
-
+    // Flattening all products from different categories into a single list
+    List<MyProduct> allProductsList = [];
+    categoryController.allProducts.forEach((categoryName, products) {
+      allProductsList.addAll(
+          products.where((product) => product != null).cast<MyProduct>());
+    });
+    // List of names of the products.
+    List<String> productNames = [];
+    for (int i = 0; i < allProductsList.length; i++) {
+      productNames.add(allProductsList[i].name);
+    }
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        toolbarHeight: 2.sh(),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Row(
+        toolbarHeight: 11.sh(),
+        title: Row(
               children: [
                 Expanded(
                   child: CustomSearchBar(
                     onChanged: (value) {
-                      // Flattening all products from different categories into a single list
-                      List<MyProduct> allProductsList = [];
-                      categoryController.allProducts
-                          .forEach((categoryName, products) {
-                        allProductsList.addAll(products
-                            .where((product) => product != null)
-                            .cast<MyProduct>());
-                      });
-                      // List of names of the products.
-                      List<String> productNames = [];
-                      for (int i = 0; i < allProductsList.length; i++) {
-                        productNames.add(allProductsList[i].name);
-                      }
                       // Call search method from the search controller
                       searchController.search(value, productNames);
+                      print(searchController.searchResults);
                       // Update search state
                       isSearching.value = value.isNotEmpty;
-                      print(searchController.searchResults);
                     },
                   ),
                 ),
@@ -83,11 +74,17 @@ class ExplorePage extends StatelessWidget {
                 SizedBox(width: 2.sw()),
               ],
             ),
-            Obx(() {
-              if(!categoryController.allProducts.isEmpty){
+            
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+           Obx(() {
+              if (categoryController.allProducts.isEmpty) {
+                return Text("Loading data");
+              }
 
-              
-              if (isSearching.toString() == "false") {
+              if (!isSearching.value) {
                 return Column(
                   children: [
                     // Tile 1
@@ -144,7 +141,7 @@ class ExplorePage extends StatelessWidget {
                                       return AllProductPage();
                                     }));
                                   },
-                                  child:  Text(
+                                  child: Text(
                                     "See More".tr,
                                     style: TextStyle(color: Colors.grey),
                                   ))
@@ -196,8 +193,6 @@ class ExplorePage extends StatelessWidget {
                                       .map((category) {
                                     return GestureDetector(
                                       onTap: () {
-                                        print("whts wrong");
-                                        print(category);
                                         String cat = category["name"];
                                         Navigator.push(context,
                                             MaterialPageRoute(
@@ -224,48 +219,42 @@ class ExplorePage extends StatelessWidget {
                   ],
                 );
               } else {
-                return Padding(
-                  padding:  EdgeInsets.symmetric(horizontal:2.sw(), vertical:2.sh()),
-                  child: Container(
-                    width: 90.sw(),
-                    height: 100.sh(),
-                    child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, // Number of columns in the grid
-                        childAspectRatio: 0.81, // Aspect ratio of each item
+                print("here");
+                print(searchController.searchResults);
+                return Builder(
+                  builder: (context) => Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 2.sw(), vertical: 2.sh()),
+                    child: Container(
+                      width: 90.sw(),
+                      height: 100.sh(),
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2, // Number of columns in the grid
+                          childAspectRatio: 0.81, // Aspect ratio of each item
+                        ),
+                        itemCount: searchController.searchResults.length,
+                        itemBuilder: (context, index) {
+                          MyProduct? product = MyProduct.findProductByName(
+                              allProductsList,
+                              searchController.searchResults[index]);
+
+                          return TempComp(
+                            is_discounted: false,
+                            name: product!.name,
+                            price: product.price,
+                            image_path: product.image_path,
+                          );
+                        },
                       ),
-                      itemCount: searchController.searchResults.length,
-                      itemBuilder: (context, index) {
-                        // Flattening all products from different categories into a single list
-                        List<MyProduct> allProductsList = [];
-                        categoryController.allProducts
-                            .forEach((categoryName, products) {
-                          allProductsList.addAll(products
-                              .where((product) => product != null)
-                              .cast<MyProduct>());
-                        });
-                        MyProduct? product = MyProduct.findProductByName(
-                            allProductsList, searchController.searchResults[index]);
-                        // final product = allProductsList[index];
-                        return TempComp(
-                          is_discounted: false,
-                          name: product!.name,
-                          price: product.price,
-                          image_path: product.image_path,
-                        );
-                      },
                     ),
                   ),
                 );
               }
-            } else{
-              return Text("Loading data");
-            }
             }),
           ],
         ),
-        // Tile 2
-        // Special
       ),
     );
   }

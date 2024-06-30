@@ -28,6 +28,7 @@ class LoginPage extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: Padding(
             padding: EdgeInsets.symmetric(horizontal: 26.sw()),
             child: Text("Sign In".tr, style: TextStyle(fontSize: 2.sh())),

@@ -21,7 +21,7 @@ class AuthService {
         'Gender':'',
         'Primary-Address':'',
         'Phone-Number':'',
-        'Order-History': {},
+        'Order-History': [],
         'Wishlist': [],
         'Shopping-Cart':[],
         'Role':'customer',

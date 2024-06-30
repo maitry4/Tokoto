@@ -4,7 +4,7 @@ class LocalString extends Translations {
   Map<String, Map<String, String>> get keys => {
     'en_US': {
       "Flash Deal": "Flash Deal",
-    "Bill": "Bill",
+    "Orders": "Orders",
     "Game": "Game",
     "Daily Gifting": "Daily Gift",
     "More": "More",
@@ -90,7 +90,7 @@ class LocalString extends Translations {
     },
     'hi': {
        "Flash Deal": "फ्लैश डील",
-    "Bill": "बिल",
+    "Orders": "बिल",
     "Game": "खेल",
     "Daily Gift": "दैनिक उपहार",
     "More": "अधिक",
@@ -177,7 +177,7 @@ class LocalString extends Translations {
     },
     'gu': {
       "Flash Deal": "ફ્લેશ ડીલ",
-    "Bill": "બિલ",
+    "Orders": "બિલ",
     "Game": "ગેમ",
     "Daily Gift": "દૈનિક ભેટ",
     "More": "વધુ",

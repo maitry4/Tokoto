@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:tokoto/components/sub_components/sub_tile.dart';
 import 'package:tokoto/pages/logged_in_user_pages/daily_reward.dart';
 import 'package:tokoto/pages/logged_in_user_pages/flash_deal_page.dart';
-import 'package:tokoto/pages/logged_in_user_pages/tap_game.dart';
+import 'package:tokoto/pages/logged_in_user_pages/order_page.dart';
 import 'package:tokoto/responsive/responsive_extension.dart';
 
 class ExploreTile2 extends StatelessWidget {
@@ -26,19 +26,15 @@ class ExploreTile2 extends StatelessWidget {
                     icon: Icon(Icons.bolt_outlined,
                         color: Theme.of(context).primaryColor),
                     text: "Flash Deal".tr)),
-            SubTile(
-                icon: Icon(Icons.book, color: Theme.of(context).primaryColor),
-                text: "Bill".tr),
             GestureDetector(
               onTap: (){
                 Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return TapTheTargetHomePage();
+                    return OrderPage();
                   }));
               },
               child: SubTile(
-                  icon: Icon(Icons.gas_meter_outlined,
-                      color: Theme.of(context).primaryColor),
-                  text: "Game".tr),
+                  icon: Icon(Icons.book, color: Theme.of(context).primaryColor),
+                  text: "Orders".tr),
             ),
             GestureDetector(
               onTap: (){
@@ -51,9 +47,6 @@ class ExploreTile2 extends StatelessWidget {
                       color: Theme.of(context).primaryColor),
                   text: "Daily Gift".tr),
             ),
-            SubTile(
-                icon: Icon(Icons.more, color: Theme.of(context).primaryColor),
-                text: "More".tr),
           ],
         ),
       ),

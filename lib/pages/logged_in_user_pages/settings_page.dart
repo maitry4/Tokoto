@@ -61,11 +61,13 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: CustomButtton(
-        onTap: () {
-          buildDialog(context);
-        },
-        text: "Change Language".tr,
+      body: Center(
+        child: CustomButtton(
+          onTap: () {
+            buildDialog(context);
+          },
+          text: "Change Language".tr,
+        ),
       ),
     );
   }

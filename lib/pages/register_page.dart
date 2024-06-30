@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tokoto/components/custom_button.dart';
 import 'package:tokoto/components/custom_textfield.dart';
@@ -9,7 +9,6 @@ import 'package:tokoto/responsive/responsive_extension.dart';
 
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
-
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -33,6 +32,7 @@ class RegisterPage extends StatelessWidget {
                         TextStyle(fontSize: 3.sh(), fontWeight: FontWeight.w500)),
                  Text(
                     "Complete your details or continue\n              with social media".tr),
+                    
                 CustomTextField(
                   icon: Icon(Icons.email_outlined),
                     text: "Enter your email".tr,
